@@ -21,8 +21,9 @@
 
 ## 설치 방법 (Installation)
 
-- **Unofficial-KR-Sfall** 배포 패키지에는 **`ddraw.dll` 파일과 `LangFont.ini` 파일**이 함께 포함되어 있습니다.
-- `ddraw.dll` 파일과 `LangFont.ini` 파일을 게임 루트 디렉터리(`fallout2.exe`가 있는 폴더)에 그대로 복사 및 덮어씌웁니다.
+- **Unofficial-KR-Sfall** 배포 패키지의 `ddraw.dll`, `ddraw.ini`, `LangFont.ini`, `sfall.dat`, `fonts` 폴더를 게임 루트 디렉터리(`fallout2.exe`가 있는 폴더)에 복사합니다.
+- 기존에 사용하던 `ddraw.ini`가 있다면 먼저 백업한 뒤 필요한 사용자 설정을 새 파일에 옮기십시오.
+- 배포 패키지는 설치마다 내용이 다른 `fallout2.cfg`를 포함하거나 덮어쓰지 않습니다.
 
 ### 참고: 기존(순정) sfall 설치 방법
 - [sfall 공식 릴리즈 아카이브](https://sourceforge.net/projects/sfall/files/)에서 `sfall_*.7z` 파일을 다운로드합니다.
@@ -40,27 +41,37 @@ Windows에 설치된 폰트를 사용하려면 `Name`에 폰트 이름을 그대
 
 ```ini
 [TEXT]
-; 작은 글꼴 (대화문, 로그 메시지)
-Name=돋움
+; 폰트 101: 대화문, 로그, 캐릭터 편집기 등 작은 UI 글꼴
+Name=Dotum
 Size=11
+LineHeight=11
+Adjust=1
+YOffset=0
 Weight=400
 
 [BUTTON]
-; 큰 UI 글꼴 (대화 제목, 일반 버튼)
-Name=돋움
-Size=19
-Weight=5000
+; 폰트 102/103: 일반 및 큰 버튼
+Name=NanumBarunGothic
+File=fonts\NanumBarunGothic.ttf
+Size=15
+LineHeight=17
+Adjust=0
+YOffset=0
+Weight=400
 
 [GNW]
-; GNW UI 글꼴 (메인 메뉴 제목, 커스텀 버튼)
-Name=돋움
-Size=19
-Weight=5000
+; 폰트 104: 메인 제목과 가장 큰 메뉴 글꼴
+Name=NanumBarunGothic
+Size=18
+LineHeight=20
+Adjust=0
+YOffset=0
+Weight=400
 
 [MISC]
 ; 한글 텍스트 렌더러 사용 여부 (0 = 끔, 1 = 켬)
 Enable=1
-ButtonThreshold=16
+BinaryThreshold=128
 ```
 
 예를 들어 게임 폴더 밖에 있는 폰트 파일을 직접 지정하려면 다음처럼 절대 경로를 사용할 수 있습니다:
@@ -72,7 +83,7 @@ File=C:\Windows\Fonts\malgun.ttf
 ```
 
 ### 2. `fallout2.cfg` 설정 수정
-텍스트 편집기로 `fallout2.cfg` 파일을 열어 `[system]` 섹션의 `language` 설정을 `korean`으로 변경합니다. 이렇게 하면 엔진이 기존 `data\text\english\` 대신 `data\text\korean\` 폴더의 번역 데이터를 불러옵니다:
+설치본마다 `fallout2.cfg`의 다른 설정이 다르므로 이 파일 전체를 교체하지 마십시오. 기존 파일을 텍스트 편집기로 열어 `[system]` 섹션의 `language` 값만 `korean`으로 변경합니다. 이미 `language=` 줄이 있다면 새 줄을 추가하지 말고 기존 값만 바꾸십시오. 이렇게 하면 엔진이 기존 `data\text\english\` 대신 `data\text\korean\` 폴더의 번역 데이터를 불러옵니다:
 
 ```ini
 [system]
