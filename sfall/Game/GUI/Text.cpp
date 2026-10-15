@@ -8,6 +8,7 @@
 #include "..\..\FalloutEngine\Fallout2.h"
 
 #include "..\..\Modules\Console.h"
+#include "..\..\Modules\KoreanText.h"
 
 #include "..\..\HRP\InterfaceBar.h"
 
@@ -22,7 +23,6 @@ namespace sf = sfall;
 
 // Returns the position of the newline character, or the position of the character within the specified width (implementation from HRP)
 static bool IsCp949Lead(unsigned char ch) {
-	if (ch == 149) return false; // Fallout UI console bullet.
 	return (ch >= 0x81 && ch <= 0xFE);
 }
 
@@ -35,7 +35,7 @@ static long GetCp949CharWidth(const char* text) {
 	return fo::util::GetTextWidth(pair);
 }
 
-static long GetPositionWidth(const char* text, long width, bool lineBreak) {
+static long GetPositionWidthKorean(const char* text, long width, bool lineBreak) {
 	long gapWidth;
 	__asm {
 		call dword ptr ds:[FO_VAR_text_spacing];
@@ -76,6 +76,43 @@ static long GetPositionWidth(const char* text, long width, bool lineBreak) {
 	return position;
 }
 
+static bool koreanWrap = false;
+
+static long GetPositionWidthOriginal(const char* text, long width, bool lineBreak) {
+	long gapWidth;
+	__asm {
+		call dword ptr ds:[FO_VAR_text_spacing];
+		mov  gapWidth, eax;
+	}
+
+	long wordCharCount = 0;
+	long position = 0;
+	long w = 0;
+
+	char c = text[position];
+	while (c) {
+		if (lineBreak && c == '\\' && text[position + 1] == 'n') return position;
+
+		if (c != ' ') wordCharCount++; else wordCharCount = 0;
+
+		w += gapWidth + fo::util::GetCharWidth(c);
+		if (w > width) {
+			// set the position to the beginning of the current word
+			if (wordCharCount > 1 && ((wordCharCount - 1) != position)) {
+				position -= wordCharCount; // position at the space char
+			}
+			break;
+		}
+		c = text[++position];
+	}
+	return position;
+}
+
+static long GetPositionWidth(const char* text, long width, bool lineBreak) {
+	return koreanWrap ? GetPositionWidthKorean(text, width, lineBreak)
+	                  : GetPositionWidthOriginal(text, width, lineBreak);
+}
+
 // Replaces the implementation of display_print_ function from HRP with support for the newline control character '\n'
 // Works with vanilla and HRP 4.1.8
 static void __fastcall DisplayPrint(const char* message, bool lineBreak) {
@@ -106,7 +143,8 @@ static void __fastcall DisplayPrint(const char* message, bool lineBreak) {
 	long font = fo::var::curr_font_num;
 	fo::func::text_font(101);
 
-	unsigned char bulletChar = 149;
+	// Use a single-byte ASCII marker in Korean mode to avoid colliding with valid CP949 lead byte 0x95.
+	unsigned char bulletChar = koreanWrap ? '*' : 149;
 	long wChar = fo::util::GetCharWidth(bulletChar);
 	width -= (wChar + fo::var::getInt(FO_VAR_max_disp));
 
@@ -211,6 +249,7 @@ static __declspec(naked) void display_print_line_break_extHRP() {
 }
 
 void Text::init() {
+	koreanWrap = sf::KoreanText::IsConfigured();
 	void* printFunc = display_print_line_break; // for vanilla and HRP 4.1.8
 
 	if (!sf::versionCHI && HRP::Setting::IsEnabled()) {
