@@ -13,6 +13,7 @@ namespace sfall
 class KoreanText : public Module {
 public:
 	const char* name() { return "KoreanText"; }
+	static bool IsConfigured();
 	void init();
 	void exit() override;
 };
