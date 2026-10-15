@@ -13,6 +13,7 @@
 #include "..\IniReader.h"
 #include "..\main.h"
 #include "..\SafeWrite.h"
+#include "..\Translate.h"
 
 #include "KoreanText.h"
 
@@ -448,7 +449,7 @@ static void LoadPrivateFontFile(const char* section, const char* legacyKey) {
 void KoreanText::init() {
 	enabled = GetFontInt("MISC", "Enable",
 		GetFontInt("Main", "KoreanText", 0)) != 0;
-	if (!enabled || !nonEngLang) return;
+	if (!enabled || !Translate::IsKoreanLanguage()) return;
 
 	binaryThreshold = GetFontInt("MISC", "BinaryThreshold", 128);
 	if (binaryThreshold < 1) binaryThreshold = 1;
