@@ -8,7 +8,7 @@ This branch starts from official sfall **4.5.1** and ports the existing Korean C
 2. Back up the installed `ddraw.dll` and existing `ddraw.ini`. Replace only `ddraw.dll`; keep the installed mod's `ddraw.ini`, `sfall.dat`, and other files unless they require their own updates.
 3. Put `LangFont.ini` from `artifacts/` next to the DLL.
 4. In your own `fallout2.cfg`, set `[system] language=korean` and provide CP949-encoded translation files under `data/text/korean`.
-5. The renderer is disabled if `[MISC] Enable=0` or the game language is English. Do not copy an enabled `LangFont.ini` to unrelated language installations without testing.
+5. The renderer is enabled only when `[MISC] Enable=1` and the selected Fallout game configuration sets `language=korean` (case-insensitive). Do not copy an enabled `LangFont.ini` to unrelated language installations without testing.
 
 The example font configuration uses Windows fonts Dotum and Malgun Gothic and does **not** bundle proprietary font files. Custom fonts may be configured using the per-profile `File` path.
 
