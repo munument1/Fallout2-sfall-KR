@@ -1,3 +1,11 @@
+# 이전 한국어 sfall 호환 포크 — 이력 보존
+
+새 한국어 패치의 공통 출력 모듈은 [Fallout2 Korean Text Engine](https://github.com/munument1/Fallout2-Korean-Text-Engine)에서 관리한다. 공식 sfall DLL을 수정하지 않고 별도 한국어 출력 모듈을 사용하는 방식이다.
+
+이 저장소의 기존 소스·태그·릴리스는 과거 방식의 이력으로 보존한다. 새 출력 방식의 설치 파일로 여기의 ddraw.dll을 덮어쓰지 않는다. 새로운 sfall 버전은 공통 엔진 쪽에서 별도 검증한다. 아래 내용은 기존 포크의 설명이다.
+
+---
+
 # sfall (한글판)
 
 [![License](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
