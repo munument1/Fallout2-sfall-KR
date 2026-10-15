@@ -33,6 +33,10 @@ static struct Translation {
 	}
 } translationIni;
 
+static bool koreanLanguage = false;
+
+bool Translate::IsKoreanLanguage() { return koreanLanguage; }
+
 size_t Translate::Get(const char* section, const char* setting, const char* defaultValue, char* buffer, size_t bufSize) {
 	return IniReader::GetString(section, setting, defaultValue, buffer, bufSize, translationIni.File());
 }
@@ -56,6 +60,7 @@ static void MakeLangTranslationPath(const char* config) {
 	IniReader::GetString("system", "master_patches", "data", patches, 65, fileConfig);
 
 	nonEngLang = (_stricmp(language, "english") != 0); // check if the game language is non-English
+	koreanLanguage = (_stricmp(language, "korean") == 0);
 
 	const char* iniDef = translationIni.def;
 	while (*iniDef == '\\' || *iniDef == '/' || *iniDef == '.') iniDef++; // skip first characters
