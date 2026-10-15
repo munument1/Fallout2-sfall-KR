@@ -10,6 +10,7 @@ on:
   - '.github/workflows/build.yml'
   - 'action.yml'
   - 'sfall/**'
+  - 'artifacts/LangFont.ini'
  pull_request:
   branches:
   - 'master'
@@ -18,6 +19,7 @@ on:
   - '.github/workflows/build.yml'
   - 'action.yml'
   - 'sfall/**'
+  - 'artifacts/LangFont.ini'
 
 jobs:
  Build:
@@ -50,6 +52,7 @@ jobs:
            mkdir -p sfall-build
 
            cp artifacts/ddraw.ini sfall-build
+           cp artifacts/LangFont.ini sfall-build
            cp artifacts/sfall_dat/sfall.dat sfall-build
            cp "${{ steps.build.outputs.release-xp }}" sfall-build
     shell: bash
