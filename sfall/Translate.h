@@ -24,6 +24,7 @@ namespace sfall
 class Translate {
 public:
 	static void init(const char* config);
+	static bool IsKoreanLanguage();
 
 	// Translates given string using sfall translation INI file and puts the result into given buffer
 	static size_t Get(const char* section, const char* setting, const char* defaultValue, char* buffer, size_t bufSize = 128);
