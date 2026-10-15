@@ -56,7 +56,6 @@ static std::vector<std::wstring> loadedFontFiles;
 static const char* langFontIni = ".\\LangFont.ini";
 
 static bool IsCp949Lead(unsigned char ch) {
-	if (ch == 0x95) return false; // Fallout UI console bullet.
 	return ch >= 0x81 && ch <= 0xFE;
 }
 
@@ -446,10 +445,14 @@ static void LoadPrivateFontFile(const char* section, const char* legacyKey) {
 	}
 }
 
+bool KoreanText::IsConfigured() {
+	return Translate::IsKoreanLanguage() && !versionCHI
+		&& GetFontInt("MISC", "Enable", GetFontInt("Main", "KoreanText", 0)) != 0;
+}
+
 void KoreanText::init() {
-	enabled = GetFontInt("MISC", "Enable",
-		GetFontInt("Main", "KoreanText", 0)) != 0;
-	if (!enabled || !Translate::IsKoreanLanguage()) return;
+	enabled = IsConfigured();
+	if (!enabled) return;
 
 	binaryThreshold = GetFontInt("MISC", "BinaryThreshold", 128);
 	if (binaryThreshold < 1) binaryThreshold = 1;
